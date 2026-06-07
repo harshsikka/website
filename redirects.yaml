@@ -1,0 +1,6 @@
+301:
+  ^/the-scaling-laws-are-breaking/$: /blog/the-scaling-laws-are-breaking/
+  ^/to-solve-the-benchmark-crisis-evals-must-think/$: /blog/to-solve-the-benchmark-crisis-evals-must-think/
+  ^/hello-world/$: /blog/hello-world/
+
+302: {}

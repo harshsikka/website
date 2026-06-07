@@ -1,0 +1,11 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file into the body of the default.hbs template --}}
+
+<header class="fig-blog-header">
+    <h1 class="fig-blog-title">Blog</h1>
+    <p class="fig-blog-subtitle">Science and Perspectives from the Team</p>
+</header>
+
+<main class="gh-main">
+    {{> "components/post-list" feed="index" postFeedStyle=@custom.post_feed_style showTitle=false showSidebar=@custom.show_publication_info_sidebar}}
+</main>
