@@ -111,6 +111,11 @@
 {{!-- Fig: pixel cursor trail + nav hover burst --}}
 <script src="{{asset "js/pixel.js"}}"></script>
 
+{{!-- Fig: floating table of contents (self-guards to posts with headings) --}}
+{{#is "post"}}
+    <script src="{{asset "js/toc.js"}}"></script>
+{{/is}}
+
 {{!-- Ghost outputs required functional scripts with this tag, it should always be the last thing before the closing body tag --}}
 {{ghost_foot}}
 

@@ -359,6 +359,15 @@
 }
 
 /* --------------------------------------------------------------------------
+   2c-1. Ghost Portal subscribe button — only while reading a blog post
+   The floating trigger is a body-level iframe injected by Portal; scope it
+   to .post-template so it's hidden on the landing and the blog index.
+   -------------------------------------------------------------------------- */
+body:not(.post-template) .gh-portal-triggerbtn-iframe {
+    display: none !important;
+}
+
+/* --------------------------------------------------------------------------
    2c-2. Blog index page header (the "Connectionism" treatment)
    -------------------------------------------------------------------------- */
 .fig-blog-header {
@@ -450,6 +459,79 @@
     .fig-row-date {
         order: -1;
     }
+}
+
+/* --------------------------------------------------------------------------
+   2e. Floating table of contents (post pages)
+   Anchored to the right edge of the 1000px shell via calc() so it sits in the
+   right gutter and never overlaps the reading column. Desktop enhancement —
+   hidden below 1400px where the gutter is too narrow to be readable.
+   -------------------------------------------------------------------------- */
+.fig-toc {
+    display: none;
+}
+
+@media (min-width: 1400px) {
+    .fig-toc {
+        display: block;
+        position: fixed;
+        top: 160px;
+        /* 50% = viewport center; +500px = shell's right edge; +16px gap */
+        left: calc(50% + 516px);
+        right: 24px;
+        max-height: calc(100vh - 220px);
+        overflow-y: auto;
+        font-family: var(--font-sans);
+    }
+}
+
+.fig-toc-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-secondary-text);
+    margin: 0 0 1.2em;
+}
+
+.fig-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--color-border);
+}
+
+.fig-toc-item {
+    margin: 0;
+}
+
+.fig-toc-sub {
+    margin-left: 0.9em;
+}
+
+.fig-toc-link {
+    display: block;
+    padding: 0.4em 0 0.4em 1em;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: 1.3rem;
+    line-height: 1.35;
+    color: var(--color-secondary-text);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.fig-toc-sub .fig-toc-link {
+    font-size: 1.25rem;
+}
+
+.fig-toc-link:hover {
+    color: var(--color-darker-gray, #0A0A0A);
+}
+
+.fig-toc-link.is-active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
 }
 
 /* Article (post page) hero title: serif italic brand accent, matching the
