@@ -538,6 +538,77 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
 }
 
 /* --------------------------------------------------------------------------
+   2g. Inline references / citations (driven by assets/js/references.js)
+   -------------------------------------------------------------------------- */
+
+/* Citation marker: small accent superscript like [17] */
+.fig-cite {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: super;
+    white-space: nowrap;
+}
+
+.fig-cite a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.fig-cite a:hover {
+    text-decoration: underline;
+}
+
+/* Hover/focus preview of the full reference */
+.fig-ref-popover {
+    position: absolute;
+    z-index: 4000;
+    max-width: 340px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: var(--color-primary-text);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.fig-ref-popover[hidden] {
+    display: none;
+}
+
+/* Reference list: targetable items with a brief flash on navigation */
+.fig-references li {
+    scroll-margin-top: 32px;
+}
+
+.fig-references li.is-flash {
+    animation: fig-ref-flash 1.4s ease;
+}
+
+@keyframes fig-ref-flash {
+    0%   { background-color: rgba(139, 71, 137, 0.14); }
+    100% { background-color: transparent; }
+}
+
+.fig-ref-backlinks {
+    margin-left: 0.5em;
+    white-space: nowrap;
+}
+
+.fig-ref-backlink {
+    margin-left: 0.35em;
+    font-size: 0.85em;
+    color: var(--color-secondary-text);
+    text-decoration: none;
+}
+
+.fig-ref-backlink:hover {
+    color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
    2f. Post header — left-oriented, editorial (Cognition-style)
    Roman serif title, author left + date right on one row, hairline divider.
    -------------------------------------------------------------------------- */

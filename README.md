@@ -22,6 +22,24 @@ the pixel-cursor effect (`assets/js/pixel.js`).
 
 - `show_images_in_feed` → `false` (clean text list)
 
+## Writing posts with references
+
+References are authored entirely in the normal Ghost editor — no HTML cards:
+
+1. **Cite inline** as plain text using square brackets: `…it is role, relation,
+   and task context.[17]`. Multiple is fine: `[5, 12]`.
+2. **End the post** with a heading whose text is exactly **References**, followed
+   by a **numbered list** (Ghost's numbered-list card) — one reference per item,
+   in order. Item _N_ is reference _N_.
+
+On render, `assets/js/references.js` turns each `[N]` into a superscript link,
+shows the full reference in a hover/focus popover, smooth-scrolls to the
+reference on click, and adds back-links from each reference to its citation(s).
+
+Safeguards: a `[N]` is only linked when `1 ≤ N ≤` the number of references, so
+stray brackets in prose are ignored, and posts without a References section are
+left completely untouched.
+
 ## Local development
 
 The theme is symlinked into a local Ghost install for live editing:
