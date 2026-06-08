@@ -77,29 +77,36 @@
         });
     }
 
-    // Vertical placement: pin the ToC at the body's at-rest top and keep it
-    // fixed there as the page scrolls (it floats at that viewport position).
+    // Vertical placement: the ToC starts level with the top of the body, then
+    // rises with the page and sticks near the top of the viewport once you
+    // scroll past it — so it stays usable even when a tall hero image pushes
+    // the body far down.
+    var STICK_TOP = 48;
+    var contentTop = 0;
+    function measure() {
+        contentTop = content.getBoundingClientRect().top + window.pageYOffset;
+    }
     function position() {
-        var top = content.getBoundingClientRect().top + window.pageYOffset;
+        var top = Math.max(STICK_TOP, contentTop - window.pageYOffset);
         toc.style.top = top + 'px';
         toc.style.maxHeight = 'calc(100vh - ' + (top + 24) + 'px)';
     }
 
-    // rAF-throttle the scrollspy; position only needs recomputing on layout
-    // changes (resize, late-loading images), not on every scroll.
+    // rAF-throttle the scroll work.
     var ticking = false;
     function onScroll() {
         if (ticking) return;
         ticking = true;
-        requestAnimationFrame(function () { setActive(); ticking = false; });
+        requestAnimationFrame(function () { position(); setActive(); ticking = false; });
     }
-    function onResize() { position(); setActive(); }
+    function onResize() { measure(); position(); setActive(); }
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
     // Feature images can shift the body down after they load.
     window.addEventListener('load', onResize);
 
+    measure();
     position();
     setActive();
 })();
