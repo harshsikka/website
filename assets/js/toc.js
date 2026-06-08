@@ -77,17 +77,18 @@
         });
     }
 
-    // Vertical placement: the ToC starts level with the top of the body, then
-    // rises with the page and sticks near the top of the viewport once you
-    // scroll past it — so it stays usable even when a tall hero image pushes
-    // the body far down.
+    // Vertical placement: anchor to the article TITLE (always near the top,
+    // above any feature image), so a tall hero never strands the ToC at the
+    // bottom. It starts level with the title, then rises and sticks near the
+    // top of the viewport as you scroll.
+    var anchorEl = document.querySelector('.gh-article-title') || content;
     var STICK_TOP = 48;
-    var contentTop = 0;
+    var anchorTop = 0;
     function measure() {
-        contentTop = content.getBoundingClientRect().top + window.pageYOffset;
+        anchorTop = anchorEl.getBoundingClientRect().top + window.pageYOffset;
     }
     function position() {
-        var top = Math.max(STICK_TOP, contentTop - window.pageYOffset);
+        var top = Math.max(STICK_TOP, anchorTop - window.pageYOffset);
         toc.style.top = top + 'px';
         toc.style.maxHeight = 'calc(100vh - ' + (top + 24) + 'px)';
     }
