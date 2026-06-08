@@ -53,7 +53,8 @@
 
     // 2. Linkify [N] markers in body text (everything except the list itself).
     var occurrences = {};   // N -> count
-    var marker = /\[(\d+(?:\s*,\s*\d+)*)\]/g;
+    // Matches comma lists and ranges: [5], [1, 2, 3], [3-12], [1, 3-12].
+    var marker = /\[(\d+(?:\s*-\s*\d+)?(?:\s*,\s*\d+(?:\s*-\s*\d+)?)*)\]/g;
 
     function skip(node) {
         var el = node.parentNode;
@@ -85,8 +86,11 @@
         var last = 0, m;
         marker.lastIndex = 0;
         while ((m = marker.exec(text))) {
-            var nums = m[1].split(',').map(function (s) { return parseInt(s, 10); });
-            // Only treat as a citation if every number is a valid reference.
+            var inner = m[1];
+            // Every explicit number must be a real reference (1..maxRef). A
+            // range "3-12" contributes its two written endpoints (3 and 12);
+            // the implied middle numbers are never rendered, so aren't checked.
+            var nums = inner.match(/\d+/g).map(function (s) { return parseInt(s, 10); });
             var valid = nums.every(function (n) { return n >= 1 && n <= maxRef; });
             if (!valid) continue;
 
@@ -95,16 +99,24 @@
             var sup = document.createElement('sup');
             sup.className = 'fig-cite';
             sup.appendChild(document.createTextNode('['));
-            nums.forEach(function (n, k) {
-                if (k > 0) sup.appendChild(document.createTextNode(', '));
+            // Walk the marker piece by piece: each number becomes a link, each
+            // separator (",", "-", spaces) stays plain text, so the displayed
+            // string is exactly as authored — "[1, 3-12]" links only 1, 3, 12.
+            var piece, pieceRe = /(\d+)|([^\d]+)/g;
+            while ((piece = pieceRe.exec(inner))) {
+                if (piece[2] !== undefined) {
+                    sup.appendChild(document.createTextNode(piece[2]));
+                    continue;
+                }
+                var n = parseInt(piece[1], 10);
                 occurrences[n] = (occurrences[n] || 0) + 1;
                 var a = document.createElement('a');
                 a.href = '#ref-' + n;
                 a.id = 'cite-' + n + '-' + occurrences[n];
-                a.textContent = n;
+                a.textContent = piece[1];
                 a.setAttribute('data-ref', n);
                 sup.appendChild(a);
-            });
+            }
             sup.appendChild(document.createTextNode(']'));
             frag.appendChild(sup);
             last = m.index + m[0].length;
