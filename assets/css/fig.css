@@ -19,11 +19,12 @@
     line-height: 1.5em;
 }
 
-/* Post pages: a wider reading column with the whole shell shifted left of
-   centre (≈⅓ of the free space on the left, ⅔ on the right). The bigger right
-   gutter leaves room for the floating ToC. Home + blog index stay centred. */
+/* Wider content with the whole shell shifted left of centre (≈⅓ of the free
+   space on the left, ⅔ on the right) — applied consistently across home, blog
+   index, and posts. The bigger right gutter leaves room for the floating ToC
+   on post pages. */
 @media (min-width: 1024px) {
-    .post-template .fig-shell {
+    .fig-shell {
         max-width: 1100px;
         margin-left: max(40px, calc((100vw - 1100px) * 0.38));
         margin-right: auto;
