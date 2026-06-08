@@ -475,6 +475,9 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     .fig-toc {
         display: block;
         position: fixed;
+        /* `top` + `max-height` are set by toc.js so the ToC starts level with
+           the body and sticks near the top on scroll; this is the pre-JS
+           fallback. */
         top: 160px;
         /* 50% = viewport center; +500px = shell's right edge; +16px gap */
         left: calc(50% + 516px);
@@ -534,12 +537,51 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     border-left-color: var(--color-accent);
 }
 
-/* Article (post page) hero title: serif italic brand accent, matching the
-   landing's display style. Flip these three lines to bold sans if desired. */
+/* --------------------------------------------------------------------------
+   2f. Post header — left-oriented, editorial (Cognition-style)
+   Roman serif title, author left + date right on one row, hairline divider.
+   -------------------------------------------------------------------------- */
+.fig-article-header {
+    align-items: flex-start !important;
+    text-align: left !important;
+    /* Our canvas is a fixed 640px (shell − sidebar), so Source's `wide` grid
+       tracks collapse and the body `main` column is inset by exactly one
+       --container-gap each side. Match that inset so the title's left edge
+       lines up with the body text. */
+    max-width: none !important;
+    margin-left: var(--container-gap) !important;
+    margin-right: var(--container-gap) !important;
+}
+
+.fig-article-header .gh-article-tag,
+.fig-article-header .gh-article-excerpt {
+    text-align: left;
+}
+
+/* Title: upright roman serif (matches the blog-index row titles), left-aligned */
 .gh-article-title {
     font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: normal;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.fig-article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    margin-top: 1.2em;
+    padding-bottom: 1.2em;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    color: var(--color-secondary-text);
+}
+
+.fig-article-date {
+    white-space: nowrap;
 }
 
 /* Post-list cards: bold sans titles, no underline, muted meta (matches target) */

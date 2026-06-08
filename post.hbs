@@ -11,7 +11,7 @@
 
     <article class="gh-article {{post_class}}">
 
-        <header class="gh-article-header gh-canvas">
+        <header class="gh-article-header gh-canvas fig-article-header">
 
             {{#if primary_tag}}
                 <a class="gh-article-tag" href="{{primary_tag.url}}">{{primary_tag.name}}</a>
@@ -22,27 +22,9 @@
             {{/if}}
 
             {{#if @custom.show_post_metadata}}
-            <div class="gh-article-meta">
-                <div class="gh-article-author-image instapaper_ignore">
-                    {{#foreach authors}}
-                        {{#if profile_image}}
-                            <a href="{{url}}">
-                                <img class="author-profile-image" src="{{img_url profile_image size="xs"}}" alt="{{name}}">
-                            </a>
-                        {{else}}
-                            <a href="{{url}}">{{> "icons/avatar"}}</a>
-                        {{/if}}
-                    {{/foreach}}
-                </div>
-                <div class="gh-article-meta-wrapper">
-                    <h4 class="gh-article-author-name">{{authors}}</h4>
-                    <div class="gh-article-meta-content">
-                        <time class="gh-article-meta-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="DD MMM YYYY"}}</time>
-                        {{#if reading_time}}
-                            <span class="gh-article-meta-length"><span class="bull">—</span> {{reading_time}}</span>
-                        {{/if}}
-                    </div>
-                </div>
+            <div class="fig-article-meta">
+                <span class="fig-article-author">By {{authors}}</span>
+                <time class="fig-article-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="MMM D, YYYY"}}</time>
             </div>
             {{/if}}
 

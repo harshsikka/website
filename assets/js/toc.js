@@ -77,14 +77,29 @@
         });
     }
 
-    // rAF-throttle the scroll handler.
+    // Vertical placement: pin the ToC at the body's at-rest top and keep it
+    // fixed there as the page scrolls (it floats at that viewport position).
+    function position() {
+        var top = content.getBoundingClientRect().top + window.pageYOffset;
+        toc.style.top = top + 'px';
+        toc.style.maxHeight = 'calc(100vh - ' + (top + 24) + 'px)';
+    }
+
+    // rAF-throttle the scrollspy; position only needs recomputing on layout
+    // changes (resize, late-loading images), not on every scroll.
     var ticking = false;
     function onScroll() {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(function () { setActive(); ticking = false; });
     }
+    function onResize() { position(); setActive(); }
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    // Feature images can shift the body down after they load.
+    window.addEventListener('load', onResize);
+
+    position();
     setActive();
 })();
