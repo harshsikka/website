@@ -19,6 +19,17 @@
     line-height: 1.5em;
 }
 
+/* Post pages: a wider reading column with the whole shell shifted left of
+   centre (≈⅓ of the free space on the left, ⅔ on the right). The bigger right
+   gutter leaves room for the floating ToC. Home + blog index stay centred. */
+@media (min-width: 1024px) {
+    .post-template .fig-shell {
+        max-width: 1100px;
+        margin-left: max(40px, calc((100vw - 1100px) * 0.38));
+        margin-right: auto;
+    }
+}
+
 .fig-sidebar {
     /* content-box so the 2em padding adds outside width:200px (=~280px),
        matching the standalone Metarch page. The blog theme forces border-box
@@ -467,25 +478,13 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
    right gutter and never overlaps the reading column. Desktop enhancement —
    hidden below 1400px where the gutter is too narrow to be readable.
    -------------------------------------------------------------------------- */
+/* Position + visibility are set by toc.js (it measures the right gutter and
+   hides the ToC when there isn't room), so it adapts to any layout. */
 .fig-toc {
     display: none;
-}
-
-@media (min-width: 1400px) {
-    .fig-toc {
-        display: block;
-        position: fixed;
-        /* `top` + `max-height` are set by toc.js so the ToC starts level with
-           the body and sticks near the top on scroll; this is the pre-JS
-           fallback. */
-        top: 160px;
-        /* 50% = viewport center; +500px = shell's right edge; +16px gap */
-        left: calc(50% + 516px);
-        right: 24px;
-        max-height: calc(100vh - 220px);
-        overflow-y: auto;
-        font-family: var(--font-sans);
-    }
+    position: fixed;
+    overflow-y: auto;
+    font-family: var(--font-sans);
 }
 
 .fig-toc-label {

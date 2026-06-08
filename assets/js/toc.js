@@ -77,17 +77,31 @@
         });
     }
 
-    // Vertical placement: anchor to the article TITLE (always near the top,
-    // above any feature image), so a tall hero never strands the ToC at the
-    // bottom. It starts level with the title, then rises and sticks near the
-    // top of the viewport as you scroll.
+    // Placement is fully measured (not hard-coded), so it adapts to whatever
+    // the layout does:
+    //  - horizontal: sits in the gutter just right of the content column, and
+    //    hides itself when that gutter is too narrow to be readable.
+    //  - vertical: anchors to the article TITLE (always above any feature
+    //    image), starts level with it, then rises and sticks near the top.
     var anchorEl = document.querySelector('.gh-article-title') || content;
+    var gutterEl = document.querySelector('.fig-content') || content;
     var STICK_TOP = 48;
+    var GAP = 28;
+    var MIN_WIDTH = 150;
     var anchorTop = 0;
     function measure() {
         anchorTop = anchorEl.getBoundingClientRect().top + window.pageYOffset;
     }
     function position() {
+        // Horizontal: gutter between the content's right edge and the viewport.
+        var rightEdge = gutterEl.getBoundingClientRect().right;
+        var avail = window.innerWidth - rightEdge - GAP * 2;
+        if (avail < MIN_WIDTH) { toc.style.display = 'none'; return; }
+        toc.style.display = 'block';
+        toc.style.left = (rightEdge + GAP) + 'px';
+        toc.style.width = Math.min(240, avail) + 'px';
+
+        // Vertical: level with the title, then stick.
         var top = Math.max(STICK_TOP, anchorTop - window.pageYOffset);
         toc.style.top = top + 'px';
         toc.style.maxHeight = 'calc(100vh - ' + (top + 24) + 'px)';
