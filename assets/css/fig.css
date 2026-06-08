@@ -613,6 +613,14 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
    Roman serif title, author left + date right on one row, hairline divider.
    -------------------------------------------------------------------------- */
 .fig-article-header {
+    /* Force a single left-aligned column for ALL posts. Source gives
+       `perspectives`/`engineering`-tagged posts a 2-column grid (image beside
+       title, text pinned to grid-column 2) — neutralise that here so every
+       post uses the same editorial header. */
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
     align-items: flex-start !important;
     text-align: left !important;
     /* Our canvas is a fixed 640px (shell − sidebar), so Source's `wide` grid
@@ -624,14 +632,34 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     margin-right: var(--container-gap) !important;
 }
 
+/* Reset any grid placement Source assigned to header children */
+.fig-article-header > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    max-width: 100%;
+}
+
 .fig-article-header .gh-article-tag,
 .fig-article-header .gh-article-excerpt {
     text-align: left;
 }
 
-/* Title: upright roman serif (matches the blog-index row titles), left-aligned */
+/* Feature image: full-width below the text (not a cropped side thumbnail) */
+.fig-article-header .gh-article-image {
+    width: 100%;
+    margin-top: 32px;
+}
+
+.fig-article-header .gh-article-image img {
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Title: upright roman serif (matches the blog-index row titles), left-aligned.
+   !important beats Source's `.has-sans-title .is-title` heading-font rule. */
 .gh-article-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-serif) !important;
     font-style: normal;
     font-weight: 400;
     line-height: 1.1;
