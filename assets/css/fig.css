@@ -639,6 +639,14 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     max-width: 100%;
 }
 
+/* Source insets post content by one --container-gap (its gh-canvas grid),
+   which home + blog content don't have — so the post column sat ~1 gap to the
+   right of everything else. Pull the whole article left by that gap so its
+   left edge lines up with the landing and blog index. */
+.post-template .fig-content .gh-main {
+    margin-left: calc(-1 * var(--container-gap));
+}
+
 .fig-article-header .gh-article-tag,
 .fig-article-header .gh-article-excerpt {
     text-align: left;
