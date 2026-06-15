@@ -1,10 +1,10 @@
 routes:
   /:
     template: home
-  /atlas/:
+  /research/:
     controller: channel
     filter: tag:technical-reports
-    template: atlas
+    template: research
 
 collections:
   /blog/:
