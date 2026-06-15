@@ -1,0 +1,16 @@
+{{!< default}}
+{{!-- Atlas: the blog index filtered to research content.
+     Driven by the /atlas/ channel route in routes.yaml (filter: tag:technical-reports;
+     more tags can be bundled into that filter later — e.g. tag:[technical-reports,papers]).
+     Reuses the same post-row list as the blog so it looks like "the blog, filtered". --}}
+
+<header class="fig-blog-header">
+    <h1 class="fig-landing-title">
+        <span class="fig-accent">Atlas</span><br>
+        <span class="fig-landing-def">Research and Results from the Team</span>
+    </h1>
+</header>
+
+<main class="gh-main">
+    {{> "components/post-list" feed="archive" postFeedStyle=@custom.post_feed_style showTitle=false showSidebar=@custom.show_publication_info_sidebar}}
+</main>

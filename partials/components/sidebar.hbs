@@ -1,9 +1,14 @@
 <nav class="fig-sidebar">
-    <a class="fig-logo-section" href="{{@site.url}}">
-        <img src="{{asset "images/fig-logo.svg"}}" alt="Fig logo" class="fig-nav-logo" />
-        <span class="fig-logo-text">fig</span>
-    </a>
-    <div class="fig-nav-links">
+    <div class="fig-sidebar-top">
+        <a class="fig-logo-section" href="{{@site.url}}">
+            <img src="{{asset "images/fig-logo.svg"}}" alt="Fig" class="fig-logo-full" />
+        </a>
+        <button type="button" class="fig-menu-toggle" aria-expanded="false" aria-controls="fig-nav-links">
+            <span class="fig-menu-label-open">Menu</span>
+            <span class="fig-menu-label-close">Close</span>
+        </button>
+    </div>
+    <div class="fig-nav-links" id="fig-nav-links">
         {{navigation}}
     </div>
 </nav>

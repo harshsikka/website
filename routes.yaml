@@ -1,6 +1,10 @@
 routes:
   /:
     template: home
+  /atlas/:
+    controller: channel
+    filter: tag:technical-reports
+    template: atlas
 
 collections:
   /blog/:
