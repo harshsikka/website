@@ -22,12 +22,12 @@ When you use our Services, we collect personal information from the sources desc
 - **Communications information:** your name, email address, and anything else you choose to include when you contact us (for example by email or social media) or when you submit one of our forms — such as investor, partnership, or recruiting inquiries — so that we can respond to and evaluate your inquiry.
 - **Subscription information:** your email address if you subscribe to updates, so we can send the updates you requested. You can unsubscribe at any time.
 
-**What we collect automatically**
+**What we receive automatically**
 We and our service providers collect the following when you use our Services, including through cookies and similar technologies. You can configure your browser to disable cookies, though this may affect how the Services work. We collect and use this information in our legitimate interests to operate the Services, run analytics, and understand how the Services are used.
 - **Device information:** such as device type, identifiers, and IP address.
 - **Location information:** the general area from which your device accesses the Services, based on information such as your IP address.
 - **Log data:** information your browser sends automatically, such as browser type and settings.
-- **Usage data:** information about how you use the Services — such as the pages and content you view, the links and elements you click, and how you navigate the site. This may include **session activity that is recorded** (e.g., session replays) to help us understand and improve usage.
+- **Usage data:** We collect information about your use of our Services, such as the content you access on our website, and your activity on our website.
 
 Your browser may let you send a "Do Not Track" or similar signal. Our Services are not currently designed to respond to these signals. California residents can exercise the choices described in Section 10.
 
@@ -51,15 +51,15 @@ We keep personal information for as long as reasonably necessary for the purpose
 
 We make reasonable efforts to protect your personal information from loss, misuse, and unauthorized access or disclosure, but we cannot guarantee perfect security. Please take care when sharing information with us.
 
-## 7. Your privacy rights
+## 7. Your personal information rights
 
 Depending on where you live, you may have the right to:
-- **Access or know** the personal information we hold about you and how it is processed;
-- **Delete** your personal information;
-- **Correct** inaccurate personal information;
-- **Port** a copy of your personal information to a third party;
-- **Restrict or object** to certain processing; and
-- **Withdraw consent**, where we rely on consent.
+- Access or know the personal information we hold about you and how it is processed;
+- Delete your personal information;
+- Correct inaccurate personal information;
+- Port a copy of your personal information to a third party;
+- Restrict or object to certain processing; and
+- Withdraw your consent, where we rely on consent.
 
 These rights are not absolute, and we may decline a request where permitted by law. To make a request, email **contact@fig.inc**. We will not discriminate against you for exercising your rights, and we may need to verify your identity before responding.
 
@@ -91,5 +91,4 @@ We are based in the United States. If you use the Services from outside the Unit
 
 ## 12. How to contact us
 
-Questions about this Policy, or requests to exercise your rights: **contact@fig.inc**
-**[Fig — FULL LEGAL ENTITY NAME]** · San Francisco, California, USA
+Please email us at contact@fig.inc if you have any questions or would like to exercise any of your rights as described herein.
