@@ -3,7 +3,7 @@ routes:
     template: home
   /research/:
     controller: channel
-    filter: tag:technical-reports
+    filter: tag:technical-report
     template: research
 
 collections:
