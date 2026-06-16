@@ -198,6 +198,10 @@
         min-height: 0;
     }
     .fig-sidebar {
+        /* border-box so width:100% includes the padding — content-box (from the
+           desktop rule) would add the padding outside 100%, overflowing the
+           viewport and clipping the Menu button on the right. */
+        box-sizing: border-box;
         width: 100%;
         height: auto;
         position: relative;
@@ -723,6 +727,30 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     font-style: normal;
     font-weight: 400;
     line-height: 1.1;
+}
+
+/* Page content (e.g. Privacy Policy): match the homepage body type — same
+   sans font, slightly smaller size — and underline links like the landing. */
+.page-template .gh-content {
+    font-size: 1.5rem;
+    font-family: var(--font-sans);
+}
+.page-template .gh-content a {
+    color: var(--color-link);
+    text-decoration: underline;
+}
+.page-template .gh-content a:hover {
+    color: var(--color-accent);
+}
+.page-template .gh-content h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: normal;
+    margin-top: 1.6em;
+}
+.page-template .gh-content h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 
 .fig-article-meta {
