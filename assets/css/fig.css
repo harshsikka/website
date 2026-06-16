@@ -50,6 +50,24 @@
     margin-bottom: 1.5em;
 }
 
+/* Mobile nav toggle — hidden on desktop, revealed < 768px (see media query) */
+.fig-menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 1.1em;
+    color: var(--color-darker-gray, #0A0A0A);
+}
+.fig-menu-toggle:hover {
+    color: var(--color-accent);
+}
+.fig-menu-label-close {
+    display: none;
+}
+
 .fig-nav-links .nav {
     list-style: none;
     padding: 0;
@@ -185,19 +203,60 @@
         position: relative;
         padding: 2em 1em;
     }
-    .fig-sidebar .fig-logo-section {
-        margin-bottom: 1.5em;
-    }
     .fig-content {
         padding: 1em 1em 2em;
     }
-    .fig-nav-links {
+    /* Collapsed top bar: logo on the left, Menu button on the right */
+    .fig-sidebar-top {
         display: flex;
-        gap: 2em;
-        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .fig-sidebar-top .fig-logo-section {
+        margin-bottom: 0;
+    }
+    .fig-menu-toggle {
+        display: inline-flex;
+        position: relative;
+        z-index: 1001;
+    }
+    /* Nav links are hidden until the menu is opened */
+    .fig-nav-links {
+        display: none;
     }
     .fig-nav-links li {
         margin-bottom: 0;
+    }
+
+    /* Open state: full-screen overlay of links, top bar stays above it */
+    .fig-sidebar.is-menu-open .fig-sidebar-top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        background: #f2f2f2;
+        padding: 2em 1em;
+    }
+    .fig-sidebar.is-menu-open .fig-nav-links {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: #f2f2f2;
+        padding: 6.5em 1.5em 2em;
+        overflow-y: auto;
+    }
+    .fig-sidebar.is-menu-open .fig-nav-links a {
+        display: block;
+        font-size: 1.6em;
+        padding: 0.35em 0;
+    }
+    .fig-sidebar.is-menu-open .fig-menu-label-open {
+        display: none;
+    }
+    .fig-sidebar.is-menu-open .fig-menu-label-close {
+        display: inline;
     }
 }
 
@@ -383,27 +442,15 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
    2c-2. Blog index page header (the "Connectionism" treatment)
    -------------------------------------------------------------------------- */
 .fig-blog-header {
-    margin-bottom: 3em;
+    /* No extra margin: spacing to the first row comes solely from the shared
+       .fig-landing-title margin-bottom (1em), matching the homepage hero's gap
+       to its first paragraph. */
+    margin-bottom: 0;
 }
 
-.fig-blog-title {
-    /* Serif italic, echoing the landing's "Hyperintelligence" hero */
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    /* 50% larger than the row titles (2.1rem) */
-    font-size: 3.15rem;
-    line-height: 1.1;
-    color: var(--color-darker-gray, #0A0A0A);
-    margin: 0;
-}
-
-.fig-blog-subtitle {
-    font-family: var(--font-sans);
-    font-size: 1.5rem;
-    color: var(--color-secondary-text);
-    margin: 0.5em 0 0;
-}
+/* Blog & Atlas headers reuse the landing hero classes (.fig-landing-title,
+   .fig-accent, .fig-landing-sep/pos, .fig-landing-def) so they match the
+   homepage "Hyperintelligence | noun" treatment exactly. */
 
 /* --------------------------------------------------------------------------
    2d. Blog index — Thinking Machines-style rows
@@ -460,6 +507,11 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     font-size: 1.4rem;
     color: var(--color-secondary-text);
     margin-top: 6px;
+}
+
+/* Tag name in the blog/research row meta — same purple as the active nav link */
+.fig-row-tag {
+    color: var(--color-accent);
 }
 
 @media (max-width: 768px) {
@@ -715,9 +767,20 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     text-decoration: none;
 }
 
-/* Top-nav: match the landing's menu scale (logo ~30px, links ~18px) */
-.gh-navigation .fig-logo-text {
-    font-size: 30px;
+/* Brand lockup: single SVG (mark + wordmark) replaces the old mark-img + text span.
+   Explicit height is required because the source SVG declares width="1711". */
+.fig-logo-full {
+    display: block;
+    width: auto;
+    height: 38px;
+}
+/* Home left-rail: larger, primary brand presence */
+.fig-sidebar .fig-logo-full {
+    height: 52px;
+}
+/* Source footer lockup: smaller */
+.gh-footer-logo .fig-logo-full {
+    height: 30px;
 }
 
 .gh-navigation-menu .nav a {
