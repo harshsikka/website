@@ -93,6 +93,9 @@
         anchorTop = anchorEl.getBoundingClientRect().top + window.pageYOffset;
     }
     function position() {
+        // Never show the ToC on narrow screens (matches the CSS breakpoint) —
+        // avoids it being measured/placed into any horizontal-overflow region.
+        if (window.innerWidth < 1024) { toc.style.display = 'none'; return; }
         // Horizontal: gutter between the content's right edge and the viewport.
         var rightEdge = gutterEl.getBoundingClientRect().right;
         var avail = window.innerWidth - rightEdge - GAP * 2;
