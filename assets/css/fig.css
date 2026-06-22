@@ -593,6 +593,190 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     border-left-color: var(--color-accent);
 }
 
+/* Hard-hide the floating ToC on narrow screens, independent of the JS gutter
+   measurement, so it can never be positioned off-screen / reachable by
+   side-scroll. (!important beats the inline display toc.js may set.) */
+@media (max-width: 1024px) {
+    .fig-toc { display: none !important; }
+}
+
+/* Post content responsiveness — keep wide artifacts from overflowing the page
+   on narrow screens.
+   - images / canvas / svg / video scale down and keep their aspect ratio
+   - data tables can't reflow, so they scroll inside their own box instead of
+     widening the whole page */
+.gh-content :is(img, svg, canvas, video) {
+    max-width: 100%;
+    height: auto;
+}
+/* Wide multi-column data tables scroll horizontally instead of squishing every
+   column to ~one character wide. nowrap keeps natural column widths so the
+   (display:block + overflow-x:auto) table actually scrolls. Applied at ALL
+   widths — otherwise, between the mobile breakpoint and the width where the
+   table happens to fit, columns collapse and text wraps letter-by-letter. */
+.gh-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+/* Failure-mode table (.fmt): only 2 columns with prose, so let it wrap and fit
+   the width instead of scrolling — the opposite of the data tables above. */
+.gh-content .fmt table {
+    display: table;
+    width: 100%;
+    white-space: normal;
+}
+.gh-content .fmt table th,
+.gh-content .fmt table td {
+    width: auto !important;
+    white-space: normal;
+}
+.gh-content .fmt .mode-name {
+    white-space: normal !important;
+}
+.gh-content {
+    overflow-wrap: break-word;
+}
+
+/* KaTeX renders a hidden MathML copy for accessibility; if KaTeX's own CSS
+   doesn't hide it, the browser renders it natively (wide) and it overflows.
+   Visually hide it (KaTeX's standard treatment) — stays available to screen
+   readers, never affects layout. */
+.gh-content .katex-mathml {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+}
+/* Wide display equations are scaled down to fit the column by fit-wide.js (same
+   treatment as the diagrams). max-width caps any pre-scale overflow. */
+.gh-content .katex-display {
+    max-width: 100%;
+}
+
+/* Non-reflowable artifacts (custom diagrams, display math, code blocks) that are
+   wider than the column get wrapped by fit-wide.js in this scroll box, so the
+   artifact scrolls inside itself instead of widening the whole page. */
+.fig-scroll-x {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+/* The lineage diagram is scaled (not squished) to fit narrow columns by
+   fit-wide.js; this wrapper reserves the scaled height and clips pre-scale
+   overflow so it never widens the page. */
+.fig-scale {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Tap-to-expand overlay (zoom.js): full-screen, pannable, shows the artifact at
+   full size. */
+.fig-zoom {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    background: #14141a;     /* default; zoom.js overrides with the artifact's dominant colour */
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+}
+.fig-zoom.is-open {
+    display: block;
+}
+/* One identical treatment for every artifact: fit to the screen and center it.
+   intrinsic elements (img/canvas) are sized by max-width/height; non-reflowing
+   diagrams/formulas are scaled to fit by zoom.js. */
+.fig-zoom__inner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 56px 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fig-zoom__inner > * {
+    transform-origin: center center;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    background: #fff;
+    border-radius: 8px;
+}
+/* The expanded media — a chart snapshot or image (zoom.js shows charts/images
+   as an <img> so they keep their aspect ratio and zoom crisply). Fit-to-screen
+   by default; .is-zoomed shows it at actual pixel size for scroll/pan. */
+.fig-zoom-media {
+    display: block;
+}
+.fig-zoom-media.is-zoomed {
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+}
+.fig-zoom__close {
+    position: fixed;
+    top: 10px;
+    right: 14px;
+    z-index: 3001;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+/* Light ambient backdrop: switch the close button to dark so it stays visible. */
+.fig-zoom--light .fig-zoom__close {
+    color: #222;
+    background: rgba(0, 0, 0, 0.12);
+}
+/* Tap/click-to-expand works at all widths now, so show the affordance everywhere. */
+.fig-zoomable {
+    cursor: zoom-in;
+}
+/* Safety net: a post page never produces a horizontal page scroll, even if a
+   stray artifact slips past the wrapper. */
+.post-template .gh-content {
+    overflow-x: clip;
+}
+/* Final guarantee: clamp horizontal page scroll on small screens. Safe at this
+   breakpoint because the sidebar is not sticky here (sticky is desktop-only), and
+   what gets clamped is empty overflow from non-reflowable artifacts — real
+   content already fits or scrolls within its own box. */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+}
+
+/* The report's custom Coda components ship desktop-only CSS (no media queries of
+   their own), so make their two-column layouts stack / fit on mobile. */
+@media (max-width: 768px) {
+    /* Failure-mode example cards: stack image over text instead of two squished
+       columns (which also collapsed the image to ~0 width). */
+    .gh-content .fmc .card {
+        grid-template-columns: 1fr !important;
+    }
+    .gh-content .fmc .card-img img {
+        width: 100%;
+        height: auto;
+    }
+}
+
 /* --------------------------------------------------------------------------
    2g. Inline references / citations (driven by assets/js/references.js)
    -------------------------------------------------------------------------- */
@@ -635,11 +819,13 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
 }
 
 /* Reference list: targetable items with a brief flash on navigation */
-.fig-references li {
+.fig-references li,
+.fig-reference {
     scroll-margin-top: 32px;
 }
 
-.fig-references li.is-flash {
+.fig-references li.is-flash,
+.fig-reference.is-flash {
     animation: fig-ref-flash 1.4s ease;
 }
 
@@ -695,12 +881,19 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     max-width: 100%;
 }
 
-/* Source insets post content by one --container-gap (its gh-canvas grid),
-   which home + blog content don't have — so the post column sat ~1 gap to the
-   right of everything else. Pull the whole article left by that gap so its
-   left edge lines up with the landing and blog index. */
+/* Posts inside the sidebar shell: drop Source's centered gh-canvas grid. Its
+   reserved side columns (--wide up to ~240px each + --full 1fr gutters) are
+   built for full-viewport, centered posts — inside the shell they waste the
+   right-hand space and squeeze the column down to ~half on narrow/tablet
+   widths. Use a simple left-aligned reading column that fills the available
+   width up to a readable max instead. */
+.post-template .fig-content .gh-content,
+.post-template .fig-content .gh-article-header {
+    display: block;
+    max-width: 740px;
+}
 .post-template .fig-content .gh-main {
-    margin-left: calc(-1 * var(--container-gap));
+    margin-left: 0;
 }
 
 .fig-article-header .gh-article-tag,

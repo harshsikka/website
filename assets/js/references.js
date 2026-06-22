@@ -29,27 +29,41 @@
     }
     if (!heading) return;
 
-    var list = heading.nextElementSibling;
-    while (list && list.tagName !== 'OL' && list.tagName !== 'UL') {
-        list = list.nextElementSibling;
-    }
-    if (!list) return;
-
-    var items = Array.prototype.slice.call(list.children).filter(function (el) {
-        return el.tagName === 'LI';
-    });
-    if (!items.length) return;
-
-    list.classList.add('fig-references');
     if (!heading.id) heading.id = 'references';
 
-    var refs = {};       // N -> { li, text }
-    items.forEach(function (li, idx) {
-        var n = idx + 1;
-        li.id = 'ref-' + n;
-        refs[n] = { li: li, text: li.textContent.trim() };
-    });
-    var maxRef = items.length;
+    var refs = {};        // N -> { el, text }
+    var refEls = [];      // the reference elements themselves (skipped when linkifying)
+    var maxRef = 0;
+
+    function addRef(n, el) {
+        el.id = 'ref-' + n;
+        el.classList.add('fig-reference');
+        refs[n] = { el: el, text: el.textContent.trim() };
+        refEls.push(el);
+        if (n > maxRef) maxRef = n;
+    }
+
+    // Style A — a numbered list (<ol>/<ul>) after the heading; N = position.
+    var list = heading.nextElementSibling;
+    while (list && list.tagName !== 'OL' && list.tagName !== 'UL' && !/^H[1-6]$/.test(list.tagName)) {
+        list = list.nextElementSibling;
+    }
+    if (list && (list.tagName === 'OL' || list.tagName === 'UL')) {
+        list.classList.add('fig-references');
+        Array.prototype.slice.call(list.children).forEach(function (li, idx) {
+            if (li.tagName === 'LI') addRef(idx + 1, li);
+        });
+    } else {
+        // Style B — one block per reference, each starting "[N] ..." (e.g. a
+        // run of <p> paragraphs). N is read from the leading marker.
+        var p = heading.nextElementSibling;
+        while (p && !/^H[1-6]$/.test(p.tagName)) {
+            var lead = p.textContent.trim().match(/^\[(\d+)\]/);
+            if (lead) addRef(parseInt(lead[1], 10), p);
+            p = p.nextElementSibling;
+        }
+    }
+    if (!maxRef) return;
 
     // 2. Linkify [N] markers in body text (everything except the list itself).
     var occurrences = {};   // N -> count
@@ -61,7 +75,9 @@
         while (el && el !== content) {
             var tag = el.tagName;
             if (tag === 'A' || tag === 'SUP' || tag === 'CODE' || tag === 'PRE' ||
-                /^H[1-6]$/.test(tag) || el === list) return true;
+                tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEMPLATE' || tag === 'NOSCRIPT' ||
+                /^H[1-6]$/.test(tag) || el === list ||
+                (el.classList && el.classList.contains('fig-reference'))) return true;
             el = el.parentNode;
         }
         return false;
@@ -129,7 +145,7 @@
 
     // 3. Back-links from each reference to its citation(s).
     Object.keys(occurrences).forEach(function (n) {
-        var li = refs[n] && refs[n].li;
+        var li = refs[n] && refs[n].el;
         if (!li) return;
         var count = occurrences[n];
         var wrap = document.createElement('span');
@@ -202,6 +218,6 @@
         hidePopover();
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         history.replaceState(null, '', '#' + id);
-        if (target.tagName === 'LI') flash(target);
+        if (target.classList && target.classList.contains('fig-reference')) flash(target);
     });
 })();

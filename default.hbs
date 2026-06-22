@@ -84,6 +84,12 @@
         document.documentElement.className = `has-${textColor}-text`;
     </script>
 
+    {{!-- Fig: render in-content chart canvases at high DPI (must load before the
+         inline chart scripts run their first draw on DOMContentLoaded) --}}
+    {{#is "post"}}
+        <script src="{{asset "js/hidpi-canvas.js"}}"></script>
+    {{/is}}
+
     {{!-- This tag outputs all your advanced SEO meta, structured data, and other important settings, it should always be the last tag before the closing head tag --}}
     {{ghost_head}}
 
@@ -118,6 +124,8 @@
 {{#is "post"}}
     <script src="{{asset "js/toc.js"}}"></script>
     <script src="{{asset "js/references.js"}}"></script>
+    <script src="{{asset "js/fit-wide.js"}}"></script>
+    <script src="{{asset "js/zoom.js"}}"></script>
 {{/is}}
 
 {{!-- Ghost outputs required functional scripts with this tag, it should always be the last thing before the closing body tag --}}
