@@ -229,7 +229,9 @@
         rt = setTimeout(render, 150);
     }, { passive: true });
 
-    var SELECTOR = '.rpt-series, .mpd-wrap, .katex-display, canvas, img';
+    // Note: .rpt-series (the responsive series-nav card) is intentionally excluded
+    // — it's not a static figure, and capturing its clicks would hijack its links.
+    var SELECTOR = '.mpd-wrap, .katex-display, canvas, img';
 
     // The expandable artifact for a click, or null. Excludes things with their
     // own handling: in-page anchors, the failure-mode cards (.fmc has its own

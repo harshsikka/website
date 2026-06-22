@@ -1,9 +1,14 @@
 /* Keep wide, non-reflowable artifacts from widening the page on narrow screens.
  *
- *  - Custom diagrams (.rpt-series): SCALE the whole thing down to fit the column
- *    (proportional shrink — cards keep their shape instead of squishing).
+ *  - Fixed-width diagrams (.mpd-wrap): SCALE the whole thing down to fit the
+ *    column (proportional shrink — keeps shape instead of squishing). Responsive
+ *    grid components (e.g. .rpt-series, which uses an auto-fill grid) are left
+ *    alone — forcing max-content on them changes their column count.
  *  - Math (.katex), code (<pre>), embeds: wrap in a horizontal SCROLL box so the
  *    artifact scrolls inside itself rather than forcing a whole-page side-scroll.
+ *  - Charts (<canvas>): wrapped in a horizontal SCROLL box too. The charts render
+ *    at a fixed legible width (so text + value labels stay readable); on narrow
+ *    screens they scroll instead of shrinking to an unreadable size.
  *
  * Only elements that actually overflow are touched; inline math and text are
  * left alone. Re-runs on resize. Self-guards on missing content. */
@@ -51,10 +56,22 @@
         w.appendChild(el);
     }
 
+    // Put each chart canvas in its own horizontal-scroll box (once). The chart
+    // draws itself at a fixed legible width; this lets it scroll on narrow
+    // screens rather than being shrunk to an unreadable size.
+    function chartWrap(el) {
+        if (el.closest('.fig-chart-scroll') || el.closest('.fig-zoom')) return;
+        var w = document.createElement('div');
+        w.className = 'fig-chart-scroll';
+        el.parentNode.insertBefore(w, el);
+        w.appendChild(el);
+    }
+
     function run() {
         var max = content.clientWidth;
         if (!max) return;
-        Array.prototype.forEach.call(content.querySelectorAll('.rpt-series, .mpd-wrap, .katex-display'), scaleToFit);
+        Array.prototype.forEach.call(content.querySelectorAll('canvas'), chartWrap);
+        Array.prototype.forEach.call(content.querySelectorAll('.mpd-wrap, .katex-display'), scaleToFit);
         Array.prototype.forEach.call(content.querySelectorAll('pre, .kg-embed-card'),
             function (el) { scrollWrap(el, max); });
     }
