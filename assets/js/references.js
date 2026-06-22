@@ -75,6 +75,7 @@
         while (el && el !== content) {
             var tag = el.tagName;
             if (tag === 'A' || tag === 'SUP' || tag === 'CODE' || tag === 'PRE' ||
+                tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEMPLATE' || tag === 'NOSCRIPT' ||
                 /^H[1-6]$/.test(tag) || el === list ||
                 (el.classList && el.classList.contains('fig-reference'))) return true;
             el = el.parentNode;
