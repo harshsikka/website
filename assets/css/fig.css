@@ -819,11 +819,13 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
 }
 
 /* Reference list: targetable items with a brief flash on navigation */
-.fig-references li {
+.fig-references li,
+.fig-reference {
     scroll-margin-top: 32px;
 }
 
-.fig-references li.is-flash {
+.fig-references li.is-flash,
+.fig-reference.is-flash {
     animation: fig-ref-flash 1.4s ease;
 }
 
