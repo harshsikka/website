@@ -620,20 +620,23 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     overflow-x: auto;
     white-space: nowrap;
 }
-/* Failure-mode table (.fmt): only 2 columns with prose, so let it wrap and fit
-   the width instead of scrolling — the opposite of the data tables above. */
-.gh-content .fmt table {
-    display: table;
-    width: 100%;
+/* Failure-mode table (.fmt): compact Failure Mode column — category tag on its
+   own line, then the mode name wrapping at word boundaries (never mid-word, e.g.
+   "Click Region" / "Error"). Definition column wraps as prose. */
+.gh-content .fmt th:first-child,
+.gh-content .fmt td:first-child {
+    width: 132px;
     white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
 }
-.gh-content .fmt table th,
-.gh-content .fmt table td {
-    width: auto !important;
+.gh-content .fmt .mode-name .tag {
+    display: block;
+}
+.gh-content .fmt th:last-child,
+.gh-content .fmt td:last-child {
     white-space: normal;
-}
-.gh-content .fmt .mode-name {
-    white-space: normal !important;
 }
 .gh-content {
     overflow-wrap: break-word;
@@ -666,12 +669,48 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
-/* The lineage diagram is scaled (not squished) to fit narrow columns by
-   fit-wide.js; this wrapper reserves the scaled height and clips pre-scale
-   overflow so it never widens the page. */
+
+/* In-content charts render at a fixed legible width (so their text + value
+   labels stay readable); on narrow screens they scroll horizontally inside this
+   box instead of shrinking to an illegible size. fit-wide.js wraps each chart
+   canvas in one of these. */
+.fig-chart-scroll {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.fig-chart-scroll > canvas {
+    max-width: none;
+}
+/* Pre-rendered chart images. Desktop: fill the column. Mobile: a middle size —
+   bigger than column-fit (so text stays legible and isn't over-downscaled into
+   blur) but smaller than full size; the overflow scrolls horizontally inside
+   .fig-chart-scroll. Tap-to-expand for fine detail. */
+.fig-chart-img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 768px) {
+    .fig-chart-scroll > .fig-chart-img {
+        width: 500px;
+        max-width: none;
+    }
+    /* Appendix charts carry longer numeric labels, so they read denser at the
+       same width — render them ~20% larger (more sideways scroll). */
+    .fig-chart-scroll > .fig-chart-img--lg {
+        width: 600px;
+    }
+}
+/* Scaled artifacts (diagrams, display math) get this wrapper from fit-wide.js;
+   it reserves the scaled height and clips pre-scale *horizontal* overflow so it
+   never widens the page. Vertical stays visible so tall glyphs / under-braces
+   on formulas aren't cut off (clip on one axis allows visible on the other). */
 .fig-scale {
     max-width: 100%;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 /* Tap-to-expand overlay (zoom.js): full-screen, pannable, shows the artifact at
@@ -710,6 +749,12 @@ body:not(.post-template) .gh-portal-triggerbtn-iframe {
     height: auto;
     background: #fff;
     border-radius: 8px;
+}
+/* Diagrams/formulas (everything except the chart/image media) get inner padding
+   so the content isn't flush against the backdrop / card edge when expanded. */
+.fig-zoom__inner > :not(.fig-zoom-media) {
+    padding: 18px 20px;
+    box-sizing: border-box;
 }
 /* The expanded media — a chart snapshot or image (zoom.js shows charts/images
    as an <img> so they keep their aspect ratio and zoom crisply). Fit-to-screen
