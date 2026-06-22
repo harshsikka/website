@@ -1,0 +1,23 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file into the body of the default.hbs template --}}
+
+{{#post}}
+
+<main class="gh-main">
+    <article class="gh-article {{post_class}}">
+
+        {{#match @page.show_title_and_feature_image}}
+            <header class="fig-blog-header">
+                <h1 class="fig-landing-title"><span class="fig-accent">{{title}}</span></h1>
+                {{#if feature_image}}{{> "feature-image"}}{{/if}}
+            </header>
+        {{/match}}
+
+        <section class="gh-content gh-canvas is-body">
+            {{content}}
+        </section>
+
+    </article>
+</main>
+
+{{/post}}

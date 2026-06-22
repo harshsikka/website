@@ -1,0 +1,1096 @@
+/* ==========================================================================
+   Fig — Metarch landing layout + unified blog styling
+   Loaded after screen.css (see default.hbs). Overrides theme defaults.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Home: sidebar shell
+   -------------------------------------------------------------------------- */
+.fig-shell {
+    display: flex;
+    min-height: 100vh;
+    max-width: var(--container-width, 1000px);
+    margin: 0 auto;
+    position: relative;
+    /* Match the standalone Metarch page's 20px type base. The blog theme sets
+       html{font-size:62.5%} + body{1.6rem}=16px, which shrank every em-based
+       size to 80%. Pinning 20px here restores the landing's scale 1:1. */
+    font-size: 20px;
+    line-height: 1.5em;
+}
+
+/* Wider content with the whole shell shifted left of centre (≈⅓ of the free
+   space on the left, ⅔ on the right) — applied consistently across home, blog
+   index, and posts. The bigger right gutter leaves room for the floating ToC
+   on post pages. */
+@media (min-width: 1024px) {
+    .fig-shell {
+        max-width: 1100px;
+        margin-left: max(40px, calc((100vw - 1100px) * 0.38));
+        margin-right: auto;
+    }
+}
+
+.fig-sidebar {
+    /* content-box so the 2em padding adds outside width:200px (=~280px),
+       matching the standalone Metarch page. The blog theme forces border-box
+       globally, which would shrink the sidebar and shift content left. */
+    box-sizing: content-box;
+    width: 200px;
+    flex-shrink: 0;
+    padding: 3em 2em;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.fig-sidebar .fig-logo-section {
+    margin-bottom: 1.5em;
+}
+
+/* Mobile nav toggle — hidden on desktop, revealed < 768px (see media query) */
+.fig-menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 1.1em;
+    color: var(--color-darker-gray, #0A0A0A);
+}
+.fig-menu-toggle:hover {
+    color: var(--color-accent);
+}
+.fig-menu-label-close {
+    display: none;
+}
+
+.fig-nav-links .nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fig-nav-links li {
+    margin-bottom: 0.4em;
+}
+
+.fig-nav-links a {
+    display: inline-block;
+    color: var(--color-darker-gray, #0A0A0A);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.fig-nav-links a:hover {
+    color: var(--color-accent);
+    padding-left: 0.5em;
+}
+
+.fig-nav-links .nav-current a {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.fig-content {
+    box-sizing: content-box;
+    flex: 1;
+    min-width: 0;
+    padding: 3em 2em 0 2em;
+}
+
+/* --------------------------------------------------------------------------
+   2. Home: landing typography (the "Hyperintelligence | noun" treatment)
+   -------------------------------------------------------------------------- */
+.fig-landing {
+    padding-bottom: 1.5em;
+    max-width: 640px;
+}
+
+.fig-landing-title {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: normal;
+    line-height: 1.3;
+}
+
+.fig-landing-title .fig-accent {
+    color: var(--color-accent);
+}
+
+.fig-landing-title .fig-landing-sep,
+.fig-landing-title .fig-landing-pos {
+    color: var(--color-darker-gray, #0A0A0A);
+    font-style: normal;
+    font-size: 0.6em;
+}
+
+.fig-landing-title .fig-landing-def {
+    color: var(--color-darker-gray, #0A0A0A);
+    font-style: normal;
+    font-size: 0.6em;
+    font-weight: bold;
+    font-family: var(--font-sans);
+}
+
+.fig-landing p {
+    font-size: 0.75em;
+    line-height: 1.5em;
+    margin: 0 0 1.6em;
+}
+
+.fig-landing-title + p {
+    margin-top: 1.6em;
+}
+
+.fig-landing a {
+    color: var(--color-link);
+    text-decoration: underline;
+}
+
+.fig-landing a:hover {
+    color: var(--color-accent);
+}
+
+.fig-landing-footer {
+    max-width: 640px;
+}
+
+.fig-landing-footer p {
+    color: var(--color-secondary-text);
+    font-size: 0.6em;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    margin-top: 2.5em;
+}
+
+.fig-landing-footer a {
+    color: rgb(51 58 87 / 1);
+    text-decoration: none;
+}
+
+.fig-landing-footer a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+/* desktop vertical rhythm parity with metarch site */
+@media (min-width: 1200px) {
+    .fig-sidebar { padding-top: 6em; }
+    .fig-content { padding-top: 6em; }
+}
+
+@media (min-width: 1600px) {
+    .fig-sidebar { padding-top: 10em; }
+    .fig-content { padding-top: 10em; }
+}
+
+/* mobile: stack sidebar above content */
+@media (max-width: 768px) {
+    .fig-shell {
+        flex-direction: column;
+        min-height: 0;
+    }
+    .fig-sidebar {
+        /* border-box so width:100% includes the padding — content-box (from the
+           desktop rule) would add the padding outside 100%, overflowing the
+           viewport and clipping the Menu button on the right. */
+        box-sizing: border-box;
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 2em 1em;
+    }
+    .fig-content {
+        padding: 1em 1em 2em;
+    }
+    /* Collapsed top bar: logo on the left, Menu button on the right */
+    .fig-sidebar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .fig-sidebar-top .fig-logo-section {
+        margin-bottom: 0;
+    }
+    .fig-menu-toggle {
+        display: inline-flex;
+        position: relative;
+        z-index: 1001;
+    }
+    /* Nav links are hidden until the menu is opened */
+    .fig-nav-links {
+        display: none;
+    }
+    .fig-nav-links li {
+        margin-bottom: 0;
+    }
+
+    /* Open state: full-screen overlay of links, top bar stays above it */
+    .fig-sidebar.is-menu-open .fig-sidebar-top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        background: #f2f2f2;
+        padding: 2em 1em;
+    }
+    .fig-sidebar.is-menu-open .fig-nav-links {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: #f2f2f2;
+        padding: 6.5em 1.5em 2em;
+        overflow-y: auto;
+    }
+    .fig-sidebar.is-menu-open .fig-nav-links a {
+        display: block;
+        font-size: 1.6em;
+        padding: 0.35em 0;
+    }
+    .fig-sidebar.is-menu-open .fig-menu-label-open {
+        display: none;
+    }
+    .fig-sidebar.is-menu-open .fig-menu-label-close {
+        display: inline;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2b. Blog pages inside the persistent sidebar shell
+   -------------------------------------------------------------------------- */
+
+/* The 20px shell base is for the landing's em-scaled type; blog templates are
+   built against the theme's 1.6rem body default — restore it for them. The
+   sidebar keeps the landing scale on every page (it sits outside gh-main). */
+.fig-content > .gh-main,
+.fig-content > .gh-footer {
+    font-size: 1.6rem;
+}
+
+/* gh-outer pads for a full viewport; on desktop the shell already provides
+   gutters. Mobile keeps Source's own padding (shell padding is slimmer). */
+@media (min-width: 769px) {
+    .fig-content .gh-outer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* Left-align with the landing's column and let the feed span the page
+   (Source caps gh-inner at --container-width) */
+.fig-content .gh-inner {
+    margin-left: 0;
+    max-width: none;
+}
+
+/* Source centers the list feed at grid columns 4-13 of a 16-col grid for a
+   full viewport; inside the shell the sidebar already handles the offset */
+.fig-content .is-list :is(.gh-container-title, .gh-main, .gh-more) {
+    grid-column: 1 / -1 !important;
+}
+
+/* The landing footer is reused on blog pages (components/fig-footer);
+   give it breathing room below the feed/article */
+.fig-content > .fig-landing-footer {
+    padding-bottom: 3em;
+}
+
+/* --------------------------------------------------------------------------
+   2c. Related posts ("Read more") — quiet editorial strip
+   -------------------------------------------------------------------------- */
+
+.fig-content .is-grid {
+    border-top: 1px solid var(--color-border);
+    margin-top: 64px;
+    padding-top: 32px;
+}
+
+/* Section label: quiet and conservative (Cognition-style), not a loud accent */
+.fig-content .is-grid .gh-container-title {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-secondary-text);
+    margin-bottom: 4px;
+}
+
+/* Text-only cards, matching the feed (no stray thumbnails) */
+.fig-content .is-grid .gh-card-image {
+    display: none;
+}
+
+/* Drop Source's hairline grid dividers — whitespace does the separating */
+.fig-content .is-grid .gh-card::before,
+.fig-content .is-grid .gh-card::after {
+    content: none;
+}
+
+.fig-content .is-grid .gh-feed {
+    row-gap: 24px;
+    column-gap: 24px;
+    /* Three equal columns (Source lays 4; with 3 posts the last sat empty) */
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* Tiles: flat white surfaces, very slightly rounded, equal heights, date
+   pinned to the bottom edge. Conservative — border warms on hover, no lift. */
+.fig-content .is-grid .gh-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.fig-content .is-grid .gh-card:hover {
+    border-color: var(--color-dark-border);
+}
+
+.fig-content .is-grid .gh-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+}
+
+.fig-content .is-grid .gh-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: none;
+}
+
+.fig-content .is-grid .gh-card-wrapper > .gh-card-meta {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .fig-content .is-grid .gh-feed {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Calmer type scale: smaller titles, muted single-line meta, no author
+   (every post is "By Manifold Team" — the date carries the information) */
+.fig-content .is-grid .gh-card-title {
+    font-size: 1.8rem;
+    line-height: 1.35;
+    transition: color 0.3s ease;
+}
+
+.fig-content .is-grid .gh-card-link:hover .gh-card-title {
+    color: var(--color-accent);
+}
+
+.fig-content .is-grid .gh-card-excerpt {
+    font-size: 1.4rem;
+    color: var(--color-secondary-text);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.fig-content .is-grid .gh-card-author {
+    display: none;
+}
+
+.fig-content .is-grid .gh-card-meta {
+    font-size: 1.3rem;
+    color: var(--color-secondary-text);
+}
+
+/* Source prefixes the date with an em-dash to separate it from the author;
+   with the author hidden it dangles — drop it */
+.fig-content .is-grid .gh-card-date::before {
+    content: none !important;
+}
+
+/* Align the blog column's first line with the landing title's position:
+   Source adds 64px+ container margin, 20px first-card padding, and a
+   40-72px article-header margin — strip them all at the top. */
+.fig-content > .gh-main > .gh-container {
+    margin-top: 0;
+}
+
+.fig-content .is-list .gh-feed > .gh-card:first-child .gh-card-link {
+    padding-top: 0;
+}
+
+.fig-content .gh-article-header {
+    margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2c-1. Ghost Portal subscribe button — only while reading a blog post
+   The floating trigger is a body-level iframe injected by Portal; scope it
+   to .post-template so it's hidden on the landing and the blog index.
+   -------------------------------------------------------------------------- */
+body:not(.post-template) .gh-portal-triggerbtn-iframe {
+    display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   2c-2. Blog index page header (the "Connectionism" treatment)
+   -------------------------------------------------------------------------- */
+.fig-blog-header {
+    /* No extra margin: spacing to the first row comes solely from the shared
+       .fig-landing-title margin-bottom (1em), matching the homepage hero's gap
+       to its first paragraph. */
+    margin-bottom: 0;
+}
+
+/* Blog & Atlas headers reuse the landing hero classes (.fig-landing-title,
+   .fig-accent, .fig-landing-sep/pos, .fig-landing-def) so they match the
+   homepage "Hyperintelligence | noun" treatment exactly. */
+
+/* --------------------------------------------------------------------------
+   2d. Blog index — Thinking Machines-style rows
+   Date | Title + author, hairline dividers, small editorial type, no clutter.
+   -------------------------------------------------------------------------- */
+
+.fig-content .is-list .gh-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.fig-row {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.fig-row:first-child {
+    border-top: 1px solid var(--color-border);
+}
+
+.fig-row-link {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 40px;
+    align-items: baseline;
+    padding: 28px 0;
+    text-decoration: none;
+}
+
+.fig-row-date {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    color: var(--color-secondary-text);
+    white-space: nowrap;
+}
+
+.fig-row-title {
+    /* Editorial serif roman, smaller than the card titles — echoes the hero
+       accent without the italic. Color shifts to accent on hover. */
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1.25;
+    color: var(--color-darker-gray, #0A0A0A);
+    transition: color 0.3s ease;
+}
+
+.fig-row-link:hover .fig-row-title {
+    color: var(--color-accent);
+}
+
+.fig-row-author {
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    color: var(--color-secondary-text);
+    margin-top: 6px;
+}
+
+/* Tag name in the blog/research row meta — same purple as the active nav link */
+.fig-row-tag {
+    color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+    .fig-row-link {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 22px 0;
+    }
+    .fig-row-date {
+        order: -1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2e. Floating table of contents (post pages)
+   Anchored to the right edge of the 1000px shell via calc() so it sits in the
+   right gutter and never overlaps the reading column. Desktop enhancement —
+   hidden below 1400px where the gutter is too narrow to be readable.
+   -------------------------------------------------------------------------- */
+/* Position + visibility are set by toc.js (it measures the right gutter and
+   hides the ToC when there isn't room), so it adapts to any layout. */
+.fig-toc {
+    display: none;
+    position: fixed;
+    overflow-y: auto;
+    font-family: var(--font-sans);
+}
+
+.fig-toc-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-secondary-text);
+    margin: 0 0 1.2em;
+}
+
+.fig-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--color-border);
+}
+
+.fig-toc-item {
+    margin: 0;
+}
+
+.fig-toc-sub {
+    margin-left: 0.9em;
+}
+
+.fig-toc-link {
+    display: block;
+    padding: 0.4em 0 0.4em 1em;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: 1.3rem;
+    line-height: 1.35;
+    color: var(--color-secondary-text);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.fig-toc-sub .fig-toc-link {
+    font-size: 1.25rem;
+}
+
+.fig-toc-link:hover {
+    color: var(--color-darker-gray, #0A0A0A);
+}
+
+.fig-toc-link.is-active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+}
+
+/* Hard-hide the floating ToC on narrow screens, independent of the JS gutter
+   measurement, so it can never be positioned off-screen / reachable by
+   side-scroll. (!important beats the inline display toc.js may set.) */
+@media (max-width: 1024px) {
+    .fig-toc { display: none !important; }
+}
+
+/* Post content responsiveness — keep wide artifacts from overflowing the page
+   on narrow screens.
+   - images / canvas / svg / video scale down and keep their aspect ratio
+   - data tables can't reflow, so they scroll inside their own box instead of
+     widening the whole page */
+.gh-content :is(img, svg, canvas, video) {
+    max-width: 100%;
+    height: auto;
+}
+/* Wide multi-column data tables scroll horizontally instead of squishing every
+   column to ~one character wide. nowrap keeps natural column widths so the
+   (display:block + overflow-x:auto) table actually scrolls. Applied at ALL
+   widths — otherwise, between the mobile breakpoint and the width where the
+   table happens to fit, columns collapse and text wraps letter-by-letter. */
+.gh-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+/* Failure-mode table (.fmt): compact Failure Mode column — category tag on its
+   own line, then the mode name wrapping at word boundaries (never mid-word, e.g.
+   "Click Region" / "Error"). Definition column wraps as prose. */
+.gh-content .fmt th:first-child,
+.gh-content .fmt td:first-child {
+    width: 132px;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}
+.gh-content .fmt .mode-name .tag {
+    display: block;
+}
+.gh-content .fmt th:last-child,
+.gh-content .fmt td:last-child {
+    white-space: normal;
+}
+.gh-content {
+    overflow-wrap: break-word;
+}
+
+/* KaTeX renders a hidden MathML copy for accessibility; if KaTeX's own CSS
+   doesn't hide it, the browser renders it natively (wide) and it overflows.
+   Visually hide it (KaTeX's standard treatment) — stays available to screen
+   readers, never affects layout. */
+.gh-content .katex-mathml {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+}
+/* Wide display equations are scaled down to fit the column by fit-wide.js (same
+   treatment as the diagrams). max-width caps any pre-scale overflow. */
+.gh-content .katex-display {
+    max-width: 100%;
+}
+
+/* Non-reflowable artifacts (custom diagrams, display math, code blocks) that are
+   wider than the column get wrapped by fit-wide.js in this scroll box, so the
+   artifact scrolls inside itself instead of widening the whole page. */
+.fig-scroll-x {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* In-content charts render at a fixed legible width (so their text + value
+   labels stay readable); on narrow screens they scroll horizontally inside this
+   box instead of shrinking to an illegible size. fit-wide.js wraps each chart
+   canvas in one of these. */
+.fig-chart-scroll {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.fig-chart-scroll > canvas {
+    max-width: none;
+}
+/* Pre-rendered chart images. Desktop: fill the column. Mobile: a middle size —
+   bigger than column-fit (so text stays legible and isn't over-downscaled into
+   blur) but smaller than full size; the overflow scrolls horizontally inside
+   .fig-chart-scroll. Tap-to-expand for fine detail. */
+.fig-chart-img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 768px) {
+    .fig-chart-scroll > .fig-chart-img {
+        width: 500px;
+        max-width: none;
+    }
+    /* Appendix charts carry longer numeric labels, so they read denser at the
+       same width — render them ~20% larger (more sideways scroll). */
+    .fig-chart-scroll > .fig-chart-img--lg {
+        width: 600px;
+    }
+}
+/* Scaled artifacts (diagrams, display math) get this wrapper from fit-wide.js;
+   it reserves the scaled height and clips pre-scale *horizontal* overflow so it
+   never widens the page. Vertical stays visible so tall glyphs / under-braces
+   on formulas aren't cut off (clip on one axis allows visible on the other). */
+.fig-scale {
+    max-width: 100%;
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
+/* Tap-to-expand overlay (zoom.js): full-screen, pannable, shows the artifact at
+   full size. */
+.fig-zoom {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    background: #14141a;     /* default; zoom.js overrides with the artifact's dominant colour */
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+}
+.fig-zoom.is-open {
+    display: block;
+}
+/* One identical treatment for every artifact: fit to the screen and center it.
+   intrinsic elements (img/canvas) are sized by max-width/height; non-reflowing
+   diagrams/formulas are scaled to fit by zoom.js. */
+.fig-zoom__inner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 56px 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fig-zoom__inner > * {
+    transform-origin: center center;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    background: #fff;
+    border-radius: 8px;
+}
+/* Diagrams/formulas (everything except the chart/image media) get inner padding
+   so the content isn't flush against the backdrop / card edge when expanded. */
+.fig-zoom__inner > :not(.fig-zoom-media) {
+    padding: 18px 20px;
+    box-sizing: border-box;
+}
+/* The expanded media — a chart snapshot or image (zoom.js shows charts/images
+   as an <img> so they keep their aspect ratio and zoom crisply). Fit-to-screen
+   by default; .is-zoomed shows it at actual pixel size for scroll/pan. */
+.fig-zoom-media {
+    display: block;
+}
+.fig-zoom-media.is-zoomed {
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+}
+.fig-zoom__close {
+    position: fixed;
+    top: 10px;
+    right: 14px;
+    z-index: 3001;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+/* Light ambient backdrop: switch the close button to dark so it stays visible. */
+.fig-zoom--light .fig-zoom__close {
+    color: #222;
+    background: rgba(0, 0, 0, 0.12);
+}
+/* Tap/click-to-expand works at all widths now, so show the affordance everywhere. */
+.fig-zoomable {
+    cursor: zoom-in;
+}
+/* Safety net: a post page never produces a horizontal page scroll, even if a
+   stray artifact slips past the wrapper. */
+.post-template .gh-content {
+    overflow-x: clip;
+}
+/* Final guarantee: clamp horizontal page scroll on small screens. Safe at this
+   breakpoint because the sidebar is not sticky here (sticky is desktop-only), and
+   what gets clamped is empty overflow from non-reflowable artifacts — real
+   content already fits or scrolls within its own box. */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+}
+
+/* The report's custom Coda components ship desktop-only CSS (no media queries of
+   their own), so make their two-column layouts stack / fit on mobile. */
+@media (max-width: 768px) {
+    /* Failure-mode example cards: stack image over text instead of two squished
+       columns (which also collapsed the image to ~0 width). */
+    .gh-content .fmc .card {
+        grid-template-columns: 1fr !important;
+    }
+    .gh-content .fmc .card-img img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2g. Inline references / citations (driven by assets/js/references.js)
+   -------------------------------------------------------------------------- */
+
+/* Citation marker: small accent superscript like [17] */
+.fig-cite {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: super;
+    white-space: nowrap;
+}
+
+.fig-cite a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.fig-cite a:hover {
+    text-decoration: underline;
+}
+
+/* Hover/focus preview of the full reference */
+.fig-ref-popover {
+    position: absolute;
+    z-index: 4000;
+    max-width: 340px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: var(--color-primary-text);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.fig-ref-popover[hidden] {
+    display: none;
+}
+
+/* Reference list: targetable items with a brief flash on navigation */
+.fig-references li,
+.fig-reference {
+    scroll-margin-top: 32px;
+}
+
+.fig-references li.is-flash,
+.fig-reference.is-flash {
+    animation: fig-ref-flash 1.4s ease;
+}
+
+@keyframes fig-ref-flash {
+    0%   { background-color: rgba(139, 71, 137, 0.14); }
+    100% { background-color: transparent; }
+}
+
+.fig-ref-backlinks {
+    margin-left: 0.5em;
+    white-space: nowrap;
+}
+
+.fig-ref-backlink {
+    margin-left: 0.35em;
+    font-size: 0.85em;
+    color: var(--color-secondary-text);
+    text-decoration: none;
+}
+
+.fig-ref-backlink:hover {
+    color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   2f. Post header — left-oriented, editorial (Cognition-style)
+   Roman serif title, author left + date right on one row, hairline divider.
+   -------------------------------------------------------------------------- */
+.fig-article-header {
+    /* Force a single left-aligned column for ALL posts. Source gives
+       `perspectives`/`engineering`-tagged posts a 2-column grid (image beside
+       title, text pinned to grid-column 2) — neutralise that here so every
+       post uses the same editorial header. */
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    /* Our canvas is a fixed 640px (shell − sidebar), so Source's `wide` grid
+       tracks collapse and the body `main` column is inset by exactly one
+       --container-gap each side. Match that inset so the title's left edge
+       lines up with the body text. */
+    max-width: none !important;
+    margin-left: var(--container-gap) !important;
+    margin-right: var(--container-gap) !important;
+}
+
+/* Reset any grid placement Source assigned to header children */
+.fig-article-header > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    max-width: 100%;
+}
+
+/* Posts inside the sidebar shell: drop Source's centered gh-canvas grid. Its
+   reserved side columns (--wide up to ~240px each + --full 1fr gutters) are
+   built for full-viewport, centered posts — inside the shell they waste the
+   right-hand space and squeeze the column down to ~half on narrow/tablet
+   widths. Use a simple left-aligned reading column that fills the available
+   width up to a readable max instead. */
+.post-template .fig-content .gh-content,
+.post-template .fig-content .gh-article-header {
+    display: block;
+    max-width: 740px;
+}
+.post-template .fig-content .gh-main {
+    margin-left: 0;
+}
+
+.fig-article-header .gh-article-tag,
+.fig-article-header .gh-article-excerpt {
+    text-align: left;
+}
+
+/* Feature image: full-width below the text (not a cropped side thumbnail) */
+.fig-article-header .gh-article-image {
+    width: 100%;
+    margin-top: 32px;
+}
+
+.fig-article-header .gh-article-image img {
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Title: upright roman serif (matches the blog-index row titles), left-aligned.
+   !important beats Source's `.has-sans-title .is-title` heading-font rule. */
+.gh-article-title {
+    font-family: var(--font-serif) !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+/* Page content (e.g. Privacy Policy): match the homepage body type — same
+   sans font, slightly smaller size — and underline links like the landing. */
+.page-template .gh-content {
+    font-size: 1.5rem;
+    font-family: var(--font-sans);
+}
+.page-template .gh-content a {
+    color: var(--color-link);
+    text-decoration: underline;
+}
+.page-template .gh-content a:hover {
+    color: var(--color-accent);
+}
+.page-template .gh-content h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: normal;
+    margin-top: 1.6em;
+}
+.page-template .gh-content h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.fig-article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    margin-top: 1.2em;
+    padding-bottom: 1.2em;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    color: var(--color-secondary-text);
+}
+
+.fig-article-date {
+    white-space: nowrap;
+}
+
+/* Post-list cards: bold sans titles, no underline, muted meta (matches target) */
+.gh-card-link,
+.gh-card-link:hover {
+    text-decoration: none;
+}
+
+.gh-card-title {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-darker-gray, #0A0A0A);
+    text-decoration: none;
+}
+
+.gh-card-excerpt {
+    color: var(--color-primary-text);
+    text-decoration: none;
+}
+
+.gh-card-meta {
+    color: var(--color-secondary-text);
+    text-decoration: none;
+}
+
+/* Brand lockup: single SVG (mark + wordmark) replaces the old mark-img + text span.
+   Explicit height is required because the source SVG declares width="1711". */
+.fig-logo-full {
+    display: block;
+    width: auto;
+    height: 38px;
+}
+/* Home left-rail: larger, primary brand presence */
+.fig-sidebar .fig-logo-full {
+    height: 52px;
+}
+/* Source footer lockup: smaller */
+.gh-footer-logo .fig-logo-full {
+    height: 30px;
+}
+
+.gh-navigation-menu .nav a {
+    font-size: 18px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Pixel cursor effect (driven by assets/js/pixel.js)
+   -------------------------------------------------------------------------- */
+.pixel {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background-color: #80448C;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.pixel.active {
+    opacity: 1;
+}
+
+.pixel-burst {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #80448C;
+    pointer-events: none;
+    animation: burst 0.6s ease-out forwards;
+}
+
+@keyframes burst {
+    0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+@keyframes burst-custom {
+    0%   { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* touch devices: no cursor trail */
+@media (hover: none) {
+    .pixel { display: none; }
+}

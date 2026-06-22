@@ -1,0 +1,29 @@
+<header id="gh-navigation" class="gh-navigation is-{{#match navigationLayout "Logo on the left"}}left-logo{{else match navigationLayout "Stacked"}}stacked{{else}}middle-logo{{/match}}{{#match @custom.header_and_footer_color "Accent color"}} has-accent-color{{/match}} gh-outer">
+    <div class="gh-navigation-inner gh-inner">
+
+        <div class="gh-navigation-brand">
+            <a class="gh-navigation-logo is-title fig-logo-section" href="{{@site.url}}">
+                <img src="{{asset "images/fig-logo.svg"}}" alt="Fig" class="fig-logo-full" />
+            </a>
+            {{> "search-toggle"}}
+            <button class="gh-burger gh-icon-button" aria-label="Menu">
+                {{> "icons/burger"}}
+                {{> "icons/close"}}
+            </button>
+        </div>
+
+        <nav class="gh-navigation-menu">
+            {{navigation}}
+            {{#unless @site.members_enabled}}
+                {{#match navigationLayout "Stacked"}}
+                    {{> "search-toggle"}}
+                {{/match}}
+            {{/unless}}
+        </nav>
+
+        <div class="gh-navigation-actions">
+            {{> "search-toggle"}}
+        </div>
+
+    </div>
+</header>

@@ -1,0 +1,9 @@
+<article class="fig-row {{post_class}}">
+    <a class="fig-row-link" href="{{url}}">
+        <time class="fig-row-date" datetime="{{date format="YYYY-MM-DD"}}">{{date format="MMM D, YYYY"}}</time>
+        <div class="fig-row-body">
+            <h3 class="fig-row-title">{{title}}</h3>
+            <p class="fig-row-author">{{#if primary_tag}}<span class="fig-row-tag">{{primary_tag.name}}</span> · {{/if}}{{#foreach authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}</p>
+        </div>
+    </a>
+</article>

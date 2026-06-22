@@ -1,0 +1,16 @@
+routes:
+  /:
+    template: home
+  /research/:
+    controller: channel
+    filter: tag:technical-report
+    template: research
+
+collections:
+  /blog/:
+    permalink: /blog/{slug}/
+    template: index
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/
